@@ -1,68 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/global/theme/theme.controller.dart';
-import 'package:task_app/profile/pages/tasks_page.dart';
+import 'package:task_app/profile/pages/note_edit_page.dart';
+import 'package:task_app/profile/pages/todo_edit_page.dart';
+import 'package:task_app/profile/pages/products_page.dart';
+import 'package:task_app/provider/note_list.dart';
+import 'package:task_app/provider/product_list.dart';
+import 'package:task_app/routes/app_routes.dart';
+import 'package:task_app/profile/pages/profilepage.dart';
 import '../../global/theme/app_controller.dart';
 import 'note_page.dart';
+// ignore: depend_on_referenced_packages
+import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int index = 0;
+
+  final screens = const [
+    ProductsPage(),
+    NotePage(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: AppController.instance,
       builder: (constext, child) {
-        return MaterialApp(
-          theme: Themes.dark,
-          darkTheme: Themes.dark,
-          themeMode: ThemeMode.system,
-          debugShowCheckedModeBanner: false,
-          home: DefaultTabController(
-            length: 2,
-            child: Scaffold(
-              drawer: Drawer(
-                backgroundColor: AppController.instance.isDark
-                    ? const Color.fromARGB(255, 46, 29, 53)
-                    : const Color.fromARGB(255, 248, 215, 255),
-                child: Switch(
-                  value: AppController.instance.isDark,
-                  onChanged: (value) {
-                    AppController.instance.changeTheme();
-                  },
-                ),
-              ),
-              appBar: AppBar(
-                centerTitle: true,
-                title: Text(
-                  'TASK APP',
-                  style: TextStyle(
-                    color: AppController.instance.isDark
-                        ? Colors.white
-                        : Colors.purple,
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (ctx) => NoteList(),
+            ),
+            ChangeNotifierProvider(
+              create: (ctx) => TodoList(),
+            )
+          ],
+          child: MaterialApp(
+              theme: AppController.instance.isDark ? Themes.dark : Themes.light,
+              darkTheme: Themes.dark,
+              themeMode: ThemeMode.light,
+              debugShowCheckedModeBanner: false,
+              home: DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  drawer: Drawer(
+                    child: Switch(
+                      value: AppController.instance.isDark,
+                      onChanged: (value) {
+                        AppController.instance.changeTheme();
+                      },
+                    ),
+                  ),
+                  appBar: AppBar(
+                    title: const Text(
+                      'TASK APP',
+                    ),
+                    elevation: 0,
+                  ),
+                  body: screens[index],
+                  bottomNavigationBar: NavigationBar(
+                    selectedIndex: index,
+                    onDestinationSelected: (index) =>
+                        setState(() => this.index = index),
+                    destinations: const [
+                      NavigationDestination(
+                        icon: Icon(Icons.list),
+                        label: 'Todo\'s',
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.note),
+                        label: 'Notes',
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.person),
+                        label: 'Profile',
+                      ),
+                    ],
                   ),
                 ),
-                backgroundColor:
-                    AppController.instance.isDark ? Colors.black : Colors.white,
-                elevation: 0,
-                // bottom: TabBar(
-                //   labelColor: AppController.instance.isDark
-                //       ? Colors.white
-                //       : Colors.black,
-                //   indicatorColor: Colors.purple,
-                //   tabs: const [
-                //     Tab(text: 'Tasks'),
-                //     Tab(text: 'Notes'),
-                //   ],
-                // ),
               ),
-              body: const TabBarView(
-                children: [
-                  TodoPage(),
-                  NotesPage(),
-                ],
-              ),
-            ),
-          ),
+              routes: {
+                AppRoutes.productForm: (ctx) => const TodoEdit(),
+                AppRoutes.noteEdit: (ctx) => const NoteEdit(),
+              }),
         );
       },
     );
