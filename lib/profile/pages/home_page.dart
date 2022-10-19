@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/global/theme/theme.controller.dart';
+import 'package:task_app/profile/pages/todo_info_page.dart';
 import 'package:task_app/profile/pages/note_edit_page.dart';
+import 'package:task_app/profile/pages/profile_edit_page.dart';
 import 'package:task_app/profile/pages/todo_edit_page.dart';
-import 'package:task_app/profile/pages/products_page.dart';
-import 'package:task_app/provider/note_list.dart';
-import 'package:task_app/provider/product_list.dart';
+import 'package:task_app/profile/pages/todo_page.dart';
+import 'package:task_app/global/provider/note_list.dart';
+import 'package:task_app/global/provider/todo_list.dart';
 import 'package:task_app/routes/app_routes.dart';
 import 'package:task_app/profile/pages/profilepage.dart';
 import '../../global/theme/app_controller.dart';
+import 'note_info_page.dart';
 import 'note_page.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
@@ -23,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   int index = 0;
 
   final screens = const [
-    ProductsPage(),
+    TodoPage(),
     NotePage(),
     ProfilePage(),
   ];
@@ -89,6 +92,12 @@ class _HomePageState extends State<HomePage> {
               routes: {
                 AppRoutes.productForm: (ctx) => const TodoEdit(),
                 AppRoutes.noteEdit: (ctx) => const NoteEdit(),
+                AppRoutes.notePage: (ctx) => const NotePage(),
+                AppRoutes.todoPage: (ctx) => const TodoPage(),
+                AppRoutes.profilePage: (ctx) => const ProfilePage(),
+                AppRoutes.profileEdit: (ctx) => const EditProfilePage(),
+                AppRoutes.todoInfoPage: (ctx) => const TodoInfoPage(),
+                AppRoutes.noteInfoPage: (ctx) => const NoteInfoPage(),
               }),
         );
       },
