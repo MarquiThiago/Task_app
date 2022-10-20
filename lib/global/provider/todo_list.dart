@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:task_app/global/data/dummy_todo.dart';
 
-import '../models/todo.dart';
+import '../../models/todo.dart';
 
 class TodoList with ChangeNotifier {
   final List<Todo> _items = dummyTodos;
@@ -21,6 +21,9 @@ class TodoList with ChangeNotifier {
       id: hasId ? data['id'] as String : Random().nextDouble().toString(),
       title: data['title'] as String,
       description: data['description'] as String,
+      colorTask: (data['colorTask'] == "") ? null : data['colorTask'] as int,
+      dateLimit:
+          (data['dateLimit'] == null) ? null : data['dateLimit'] as DateTime,
     );
 
     if (hasId) {

@@ -1,103 +1,60 @@
 import 'package:flutter/material.dart';
-import 'add_page.dart';
+import 'package:provider/provider.dart';
+import 'package:task_app/global/utilities/field.dart';
+import 'package:task_app/global/utilities/my_floating_button.dart';
 import '../../global/itens/todo_item.dart';
-import '../../global/utilities/my_floating_button.dart';
+import '../../global/provider/todo_list.dart';
+import '../../routes/app_routes.dart';
 
-class TodoPage extends StatefulWidget {
+class TodoPage extends StatelessWidget {
   const TodoPage({Key? key}) : super(key: key);
 
   @override
-  State<TodoPage> createState() => _TodoPageState();
-}
-
-class _TodoPageState extends State<TodoPage> {
-  final _controller = TextEditingController();
-  final _controler = TextEditingController();
-  //list of todos
-  List todos = [
-    ['thiago gostosinhuuuu', '', true],
-    ['Lindu', '', false]
-  ];
-
-//checkBox was tapped
-  void checkBoxChanged(bool? value, int index) {
-    setState(() {
-      todos[index][2] = !todos[index][2];
-    });
-  }
-
-  //save new task
-  void saveNewTask() {
-    setState(() {
-      todos.add([_controller.text, _controler.text, false]);
-    });
-
-    Navigator.of(context).pop();
-    _controller.clear();
-    _controler.clear();
-  }
-
-//add a new task to the tddo list
-  void createNewTask() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return AddPage(
-            secondController: _controler,
-            firstController: _controller,
-            onSave: saveNewTask,
-            onCancel: () => Navigator.of(context).pop(),
-          );
-        },
-      ),
-    );
-  }
-
-  //delete task
-  void onDelete(int index) {
-    setState(() {
-      todos.removeAt(index);
-    });
-  }
-
-  void onEdit(int index) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return AddPage(
-            firstController: _controller,
-            secondController: _controler,
-            onSave: saveNewTask,
-            onCancel: () => Navigator.of(context).pop(),
-          );
-        },
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final TodoList todos = Provider.of(context);
     return Scaffold(
-      body: ListView.builder(
-        itemCount: todos.length,
-        itemBuilder: (context, index) {
-          return TodoItem(
-            editFunction: (todos) => setState(() {
-              onEdit(index);
-            }),
-            deleteFunction: (context) => setState(() {
-              onDelete(index);
-            }),
-            todoName: todos[index][0],
-            todoContent: todos[index][1],
-            todoDone: todos[index][2],
-            onChanged: (value) => checkBoxChanged(value, index),
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Expanded(
+              //       child: TextField(
+              //     decoration: InputDecoration(
+              //       prefixIcon: const Icon(Icons.search),
+              //       hintText: 'search',
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //     ),
+              //   )),
+              // ),
+              Expanded(
+                flex: 10,
+                child: ListView.builder(
+                  itemCount: todos.itemsCount,
+                  itemBuilder: (ctx, i) => Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        TodoItem(todos.items[i]),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       floatingActionButton: MyFloatingButton(
         icon: Icons.add,
-        onPressed: createNewTask,
+        onPressed: () => Navigator.of(context).pushNamed(
+          AppRoutes.productForm,
+        ),
       ),
     );
   }

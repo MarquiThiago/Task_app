@@ -223,12 +223,6 @@ class _NoteEditState extends State<NoteEdit> {
                   Expanded(
                       child: MyButton(text: 'save', onPressed: _submitForm)),
                   addHorizontalSpace(10),
-                  Expanded(
-                    child: MyButton(
-                      text: 'cancel',
-                      onPressed: (() => Navigator.of(context).pop()),
-                    ),
-                  ),
                 ],
               ),
             ],

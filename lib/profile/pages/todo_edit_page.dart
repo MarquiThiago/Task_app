@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
+import 'package:task_app/global/utilities/chip.dart';
 import 'package:task_app/global/utilities/field.dart';
 
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
-import '../../global/utilities/my_calendar.dart';
 import '../../models/todo.dart';
-import '../../provider/product_list.dart';
+import '../../global/provider/todo_list.dart';
 
 class TodoEdit extends StatefulWidget {
   const TodoEdit({Key? key}) : super(key: key);
@@ -19,6 +20,9 @@ class TodoEdit extends StatefulWidget {
 class _TodoEditState extends State<TodoEdit> {
   final _formKey = GlobalKey<FormState>();
   final _formData = <String, Object>{};
+  DateTime? dateLimit;
+  DateTime date = DateTime(2022, 12, 24);
+  int? colorTask;
 
   @override
   void didChangeDependencies() {
@@ -32,12 +36,18 @@ class _TodoEditState extends State<TodoEdit> {
         _formData['id'] = todo.id;
         _formData['title'] = todo.title;
         _formData['description'] = todo.description;
+        colorTask = todo.colorTask;
+        dateLimit = todo.dateLimit;
+        date = todo.dateLimit ?? DateTime.now();
       }
     }
   }
 
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
+
+    _formData['colorTask'] = colorTask ?? '';
+    _formData['dateLimit'] = dateLimit ?? DateTime.now();
 
     if (!isValid) {
       return;
@@ -87,7 +97,7 @@ class _TodoEditState extends State<TodoEdit> {
                 text: 'Add the task description',
                 initialValue: _formData['description']?.toString(),
                 hint: 'description',
-                lines: 1,
+                lines: 3,
                 onSaved: (description) =>
                     _formData['description'] = description ?? '',
               ),
@@ -99,57 +109,127 @@ class _TodoEditState extends State<TodoEdit> {
               addVerticalSpace(20),
               Row(
                 children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[800],
+                  GestureDetector(
+                    onTap: () {
+                      colorTask = (Colors.blue[300])!.value;
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.blue[300],
+                      radius: 17,
                     ),
                   ),
                   addHorizontalSpace(10),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.pink[500],
+                  GestureDetector(
+                    onTap: () {
+                      colorTask = (Colors.pink[300])!.value;
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.pink[300],
+                      radius: 17,
                     ),
                   ),
                   addHorizontalSpace(10),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.yellow[800],
+                  GestureDetector(
+                    onTap: () {
+                      colorTask = (Colors.orange[300])!.value;
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.orange[300],
+                      radius: 17,
                     ),
                   ),
                   addHorizontalSpace(10),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.red[800],
+                  GestureDetector(
+                    onTap: () {
+                      colorTask = (Colors.red[300])!.value;
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.red[300],
+                      radius: 17,
                     ),
                   ),
                   addHorizontalSpace(10),
+                  GestureDetector(
+                    onTap: () {
+                      colorTask = (Colors.purple[300])!.value;
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.purple[300],
+                      radius: 17,
+                    ),
+                  ),
                 ],
               ),
-              addVerticalSpace(30),
+              addVerticalSpace(20),
               Text(
                 'Choose a task date limit ',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              addVerticalSpace(30),
-              const MyCalendar(),
-              addVerticalSpace(40),
-              Row(
+              addVerticalSpace(20),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    DateFormat('d MMM y').format(date),
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  addVerticalSpace(8),
+                  MyButton(
+                    text: 'select date',
+                    onPressed: () async {
+                      dateLimit = await showDatePicker(
+                        context: context,
+                        initialDate: date,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100),
+                      );
+                      if (dateLimit == null) return;
+                      setState(() => date = dateLimit!);
+                    },
+                  ),
+                  addVerticalSpace(8),
+                  Text(
+                    'Choose your task tag',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  addVerticalSpace(8),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: const [
+                        ChipWidget(name: 'Study'),
+                        ChipWidget(name: 'Work'),
+                        ChipWidget(name: 'Personal'),
+                        ChipWidget(name: 'Goals'),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: const [
+                        ChipWidget(name: 'Shoppings'),
+                        ChipWidget(name: 'Remember Later'),
+                        ChipWidget(name: 'Home Tasks'),
+                        ChipWidget(name: 'quotes'),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              addVerticalSpace(20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MyButton(text: 'save', onPressed: _submitForm),
+                  Expanded(
+                      child: MyButton(text: 'save', onPressed: _submitForm)),
                   addHorizontalSpace(10),
-                  MyButton(
-                    text: 'cancel',
-                    onPressed: (() => Navigator.of(context).pop()),
+                  Expanded(
+                    child: MyButton(
+                      text: 'cancel',
+                      onPressed: (() => Navigator.of(context).pop()),
+                    ),
                   ),
                 ],
               ),

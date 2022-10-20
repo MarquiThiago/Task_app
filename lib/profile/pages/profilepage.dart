@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/global/utilities/consts.dart';
 import '../../global/data/user_preferences.dart';
-import '../../test_widgets/profile_widget.dart';
+import '../../global/itens/profile_widget.dart';
 import 'profile_edit_page.dart';
 
 class ProfilePage extends StatefulWidget {
