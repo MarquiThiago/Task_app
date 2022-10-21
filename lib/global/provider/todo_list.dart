@@ -22,9 +22,8 @@ class TodoList with ChangeNotifier {
       return _items;
     } else {
       final taskFinder = List<Todo>.from(_items)
-          .where((pesquisa) => pesquisa.title
-              .toUpperCase()
-              .startsWith(searchString.toUpperCase()))
+          .where((search) =>
+              search.title.toUpperCase().startsWith(searchString.toUpperCase()))
           .toList();
       if (taskFinder.isEmpty) {
         return [];
@@ -39,7 +38,7 @@ class TodoList with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveProduct(Map<String, Object> data) {
+  void saveTodo(Map<String, Object> data) {
     bool hasId = data['id'] != null;
 
     final todo = Todo(
@@ -52,19 +51,19 @@ class TodoList with ChangeNotifier {
     );
 
     if (hasId) {
-      updateProduct(todo);
+      updateTodo(todo);
     } else {
-      addProduct(todo);
+      addTodo(todo);
     }
   }
 
-  void addProduct(Todo todo) {
+  void addTodo(Todo todo) {
     _items.insert(0, todo);
     notifyListeners();
   }
 
-  void updateProduct(Todo todo) {
-    int index = _items.indexWhere((p) => p.id == todo.id);
+  void updateTodo(Todo todo) {
+    int index = _items.indexWhere((t) => t.id == todo.id);
 
     if (index >= 0) {
       _items[index] = todo;
@@ -72,11 +71,11 @@ class TodoList with ChangeNotifier {
     }
   }
 
-  void removeProduct(Todo todo) {
-    int index = _items.indexWhere((p) => p.id == todo.id);
+  void removeTodo(Todo todo) {
+    int index = _items.indexWhere((t) => t.id == todo.id);
 
     if (index >= 0) {
-      _items.removeWhere((p) => p.id == todo.id);
+      _items.removeWhere((t) => t.id == todo.id);
       notifyListeners();
     }
   }

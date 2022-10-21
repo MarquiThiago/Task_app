@@ -4,7 +4,7 @@ A new Flutter project.
 
 ## Getting Started
 
-Passos inicial para rodar o aplicativo
+Passos inicial para rodar o aplicativo com flutter 3.3.4 e Dart 2.18.2
 
 1- para abrir o app primeiramente você devera copiar o codigo do app no gitHub por esse link https://github.com/MarquiThiago/Task_app.
 2- depois de copiar o link do codigo você devera ir ao Visual Studio Code e clicar em "Clonar um repositorio Git..."

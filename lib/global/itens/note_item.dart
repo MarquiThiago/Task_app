@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/note.dart';
 import '../provider/note_list.dart';
 import '../routes/app_routes.dart';
+import '../utilities/my_button.dart';
 
 class NoteItem extends StatefulWidget {
   final Note note;
@@ -20,6 +21,7 @@ class NoteItem extends StatefulWidget {
 }
 
 class _NoteItemState extends State<NoteItem> {
+  TimeOfDay time = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -42,10 +44,33 @@ class _NoteItemState extends State<NoteItem> {
         children: [
           SlidableAction(
             onPressed: (value) {
-              Provider.of<NoteList>(
-                context,
-                listen: false,
-              ).removeNote(widget.note);
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(
+                    'Delete Task',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  content: Text(
+                      'Are you sure you want to delete the task "${widget.note.title}"?'),
+                  actions: [
+                    MyButton(
+                      text: 'Delete',
+                      onPressed: () {
+                        Provider.of<NoteList>(
+                          context,
+                          listen: false,
+                        ).removeNote(widget.note);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    MyButton(
+                      text: 'Cancel',
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+              );
             },
             icon: Icons.delete,
             backgroundColor: Theme.of(context).errorColor,
@@ -80,8 +105,8 @@ class _NoteItemState extends State<NoteItem> {
                   Text(
                     DateFormat('d MMM y')
                         .format(widget.note.dateLimit ?? DateTime.now()),
-                    style: Theme.of(context).textTheme.headline4,
-                  )
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
                 ],
               ),
             ),

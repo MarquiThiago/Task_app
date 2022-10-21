@@ -70,6 +70,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   body: screens[index],
                   bottomNavigationBar: NavigationBar(
+                    height: 55,
                     selectedIndex: index,
                     onDestinationSelected: (index) =>
                         setState(() => this.index = index),

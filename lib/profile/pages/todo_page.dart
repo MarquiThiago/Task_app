@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/my_floating_button.dart';
-
 import '../../global/itens/todo_item.dart';
 import '../../global/provider/todo_list.dart';
 import '../../global/routes/app_routes.dart';
@@ -19,12 +19,12 @@ class TodoPage extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: TextField(
                 onChanged: (searchString) {
                   if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -56,7 +56,10 @@ class TodoPage extends StatelessWidget {
                 ),
               ),
             ),
-            Text(if(todos.itemsCount == 0){'Você não tem itens a sua lista'}else if(todos.itemsCount == 1){'Você tem ${todos.itemsCount} item nesta lista!'}else{'Você tem ${todos.itemsCount} itens nesta lista!'};
+            Text(
+              todos.itemsCount <= 1
+                  ? 'Você tem ${todos.itemsCount} item a sua lista!'
+                  : 'Você tem ${todos.itemsCount} itens nesta lista!',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -71,7 +74,3 @@ class TodoPage extends StatelessWidget {
     );
   }
 }
-
-              todos.itemsCount == 0
-                  ? 'Você não tem itens a sua lista'
-                  : 'Você tem ${todos.itemsCount} itens nesta lista!',

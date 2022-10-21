@@ -39,6 +39,11 @@ class Themes {
         surface: Colors.white,
         onSurface: Colors.black),
     textTheme: const TextTheme(
+      headline3: TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
       headline4: TextStyle(
         color: Colors.black,
         fontSize: 16,
@@ -106,6 +111,11 @@ class Themes {
         backgroundColor: Colors.black38,
         indicatorColor: Colors.purple.shade300),
     textTheme: const TextTheme(
+      headline3: TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
       headline4: TextStyle(
         color: Colors.black,
         fontSize: 16,
@@ -117,7 +127,7 @@ class Themes {
         fontWeight: FontWeight.bold,
       ),
       headline6: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontWeight: FontWeight.bold,
         fontSize: 25,
       ),

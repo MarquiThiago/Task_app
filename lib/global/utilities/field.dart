@@ -8,11 +8,13 @@ class Field extends StatelessWidget {
   final String? initialValue;
   void Function(String?)? onSaved;
   final String? hint;
+  final String? Function(String?)? validator;
   final int? lines;
 
   Field({
     Key? key,
     required this.text,
+    this.validator,
     this.icon,
     this.onSaved,
     this.initialValue,
@@ -31,6 +33,7 @@ class Field extends StatelessWidget {
         ),
         addVerticalSpace(8),
         TextFormField(
+          validator: validator,
           onSaved: onSaved,
           initialValue: initialValue,
           maxLines: lines,

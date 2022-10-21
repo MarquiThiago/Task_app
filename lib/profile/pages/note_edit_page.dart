@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/field.dart';
 import 'package:task_app/global/provider/note_list.dart';
@@ -86,6 +87,15 @@ class _NoteEditState extends State<NoteEdit> {
                 initialValue: _formData['title']?.toString(),
                 hint: 'title',
                 lines: 1,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Invalid title';
+                  }
+                  if (value.trim().length < 3) {
+                    return 'Title is to short. It should have more then 3 leters';
+                  }
+                  return null;
+                },
                 onSaved: (title) => _formData['title'] = title ?? '',
               ),
               const SizedBox(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
-
+import 'package:task_app/global/utilities/consts.dart';
+import 'package:task_app/global/utilities/my_button.dart';
 import '../routes/app_routes.dart';
 import '../models/todo.dart';
 import '../provider/todo_list.dart';
@@ -43,10 +45,33 @@ class _TodoItemState extends State<TodoItem> {
         children: [
           SlidableAction(
             onPressed: (value) {
-              Provider.of<TodoList>(
-                context,
-                listen: false,
-              ).removeProduct(widget.todo);
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(
+                    'Delete Task',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  content: Text(
+                      'Are you sure you want to delete the task "${widget.todo.title}"?'),
+                  actions: [
+                    MyButton(
+                      text: 'Delete',
+                      onPressed: () {
+                        Provider.of<TodoList>(
+                          context,
+                          listen: false,
+                        ).removeTodo(widget.todo);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    MyButton(
+                      text: 'Cancel',
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+              );
             },
             icon: Icons.delete,
             backgroundColor: Theme.of(context).errorColor,
@@ -103,10 +128,11 @@ class _TodoItemState extends State<TodoItem> {
                       fontSize: 16,
                     ),
                   ),
+                  addVerticalSpace(10),
                   Text(
                     DateFormat('d MMM y')
                         .format(widget.todo.dateLimit ?? DateTime.now()),
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headline3,
                   )
                 ],
               ),

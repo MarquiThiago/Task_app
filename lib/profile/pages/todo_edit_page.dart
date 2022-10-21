@@ -58,9 +58,20 @@ class _TodoEditState extends State<TodoEdit> {
     Provider.of<TodoList>(
       context,
       listen: false,
-    ).saveProduct(_formData);
+    ).saveTodo(_formData);
 
     Navigator.of(context).pop();
+  }
+
+  void _showDatePeacker() async {
+    dateLimit = await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (dateLimit == null) return;
+    setState(() => date = dateLimit!);
   }
 
   @override
@@ -88,6 +99,15 @@ class _TodoEditState extends State<TodoEdit> {
                 initialValue: _formData['title']?.toString(),
                 hint: 'title',
                 lines: 1,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Titulo iinvalido';
+                  }
+                  if (value.trim().length < 3) {
+                    return 'Titulo muito pequeno. no minimo 3 letras.';
+                  }
+                  return null;
+                },
                 onSaved: (title) => _formData['title'] = title ?? '',
               ),
               const SizedBox(
@@ -176,16 +196,7 @@ class _TodoEditState extends State<TodoEdit> {
                   addVerticalSpace(8),
                   MyButton(
                     text: 'select date',
-                    onPressed: () async {
-                      dateLimit = await showDatePicker(
-                        context: context,
-                        initialDate: date,
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100),
-                      );
-                      if (dateLimit == null) return;
-                      setState(() => date = dateLimit!);
-                    },
+                    onPressed: _showDatePeacker,
                   ),
                   addVerticalSpace(8),
                   Text(

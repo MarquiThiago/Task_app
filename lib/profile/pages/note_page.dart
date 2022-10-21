@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/my_floating_button.dart';
 import '../../global/itens/note_item.dart';
@@ -17,8 +18,9 @@ class NotePage extends StatelessWidget {
     final NoteList notes = Provider.of(context);
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -51,6 +53,12 @@ class NotePage extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            Text(
+              notes.itemsCount <= 1
+                  ? 'Você tem ${notes.itemsCount} item a sua lista!'
+                  : 'Você tem ${notes.itemsCount} itens nesta lista!',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
         ),
