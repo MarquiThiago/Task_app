@@ -2,15 +2,41 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:task_app/global/data/dummy_note.dart';
-import '../../models/note.dart';
+import '../models/note.dart';
 
 class NoteList with ChangeNotifier {
   final List<Note> _items = dummyNotes;
 
-  List<Note> get items => [..._items];
+  List<Note> get items {
+    final task = _findTask(search);
+    return task;
+  }
 
+  String? search = '';
   int get itemsCount {
-    return _items.length;
+    return items.length;
+  }
+
+  List<Note> _findTask(String? searchString) {
+    if (searchString == null || searchString == '') {
+      return _items;
+    } else {
+      final taskFinder = List<Note>.from(_items)
+          .where((pesquisa) => pesquisa.title
+              .toUpperCase()
+              .startsWith(searchString.toUpperCase()))
+          .toList();
+      if (taskFinder.isEmpty) {
+        return [];
+      } else {
+        return taskFinder;
+      }
+    }
+  }
+
+  void searchTask(String? searchString) {
+    search = searchString;
+    notifyListeners();
   }
 
   void saveProduct(Map<String, Object> data) {
@@ -33,7 +59,7 @@ class NoteList with ChangeNotifier {
   }
 
   void addProduct(Note note) {
-    _items.add(note);
+    _items.insert(0, note);
     notifyListeners();
   }
 

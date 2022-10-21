@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/field.dart';
 import 'package:task_app/global/provider/note_list.dart';
+import '../../global/models/note.dart';
 import '../../global/utilities/chip.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
-import '../../models/note.dart';
 
 class NoteEdit extends StatefulWidget {
   const NoteEdit({Key? key}) : super(key: key);

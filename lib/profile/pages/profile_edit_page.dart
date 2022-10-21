@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/global/utilities/consts.dart';
 import 'package:task_app/global/utilities/my_button.dart';
-import 'package:task_app/global/utilities/text_field.dart';
-
 import '../../global/data/user_preferences.dart';
-import '../../models/user.dart';
+import '../../global/models/user.dart';
 import '../../global/itens/profile_widget.dart';
+import '../../global/utilities/profile_field.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});

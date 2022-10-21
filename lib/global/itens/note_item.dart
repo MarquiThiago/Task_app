@@ -3,9 +3,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
-import '../../models/note.dart';
+import '../models/note.dart';
 import '../provider/note_list.dart';
-import '../../routes/app_routes.dart';
+import '../routes/app_routes.dart';
 
 class NoteItem extends StatefulWidget {
   final Note note;

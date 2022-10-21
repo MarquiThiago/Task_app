@@ -1,24 +1,19 @@
-import '../../models/todo.dart';
+import '../models/todo.dart';
 
 final dummyTodos = [
   Todo(
     id: 'p1',
-    title: 'Red Shirt',
-    description: 'A red shirt - it is pretty red!',
+    title: 'Levar o dog pra passear',
+    description: 'hoje as 16 horas da tarde levar o dog pra passear',
   ),
   Todo(
     id: 'p2',
-    title: 'Trousers',
-    description: 'A nice pair of trousers.',
+    title: 'Cozinha',
+    description: 'Arrumar a cozinha e lavar a louça do almoço amanha',
   ),
   Todo(
     id: 'p3',
-    title: 'Yellow Scarf',
-    description: 'Warm and cozy - exactly what you need for the winter.',
-  ),
-  Todo(
-    id: 'p4',
-    title: 'A Pan',
-    description: 'Prepare any meal you want.',
+    title: 'Estudar ',
+    description: 'estudar para a prova do Enem que esta chegando',
   ),
 ];

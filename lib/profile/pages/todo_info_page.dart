@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/global/utilities/consts.dart';
+import '../../global/models/todo.dart';
 import '../../global/theme/app_controller.dart';
-import '../../models/todo.dart';
 
 class TodoInfoPage extends StatefulWidget {
   const TodoInfoPage({super.key});

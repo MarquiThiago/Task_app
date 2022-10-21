@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../models/todo.dart';
-import '../../profile/pages/todo_info_page.dart';
+
+import '../routes/app_routes.dart';
+import '../models/todo.dart';
 import '../provider/todo_list.dart';
-import '../../routes/app_routes.dart';
 
 class TodoItem extends StatefulWidget {
   final Todo todo;
@@ -29,7 +29,7 @@ class _TodoItemState extends State<TodoItem> {
         children: [
           SlidableAction(
             onPressed: ((context) => Navigator.of(context).pushNamed(
-                  AppRoutes.productForm,
+                  AppRoutes.todoEdit,
                   arguments: widget.todo,
                 )),
             icon: Icons.edit,

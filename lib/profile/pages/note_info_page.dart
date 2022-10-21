@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_app/global/theme/app_controller.dart';
 import 'package:task_app/global/utilities/consts.dart';
 
-import '../../models/note.dart';
+import '../../global/models/note.dart';
 
 class NoteInfoPage extends StatefulWidget {
   const NoteInfoPage({super.key});

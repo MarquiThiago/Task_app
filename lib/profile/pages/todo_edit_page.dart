@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/chip.dart';
 import 'package:task_app/global/utilities/field.dart';
 
+import '../../global/models/todo.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
-import '../../models/todo.dart';
 import '../../global/provider/todo_list.dart';
 
 class TodoEdit extends StatefulWidget {
@@ -225,12 +225,6 @@ class _TodoEditState extends State<TodoEdit> {
                   Expanded(
                       child: MyButton(text: 'save', onPressed: _submitForm)),
                   addHorizontalSpace(10),
-                  Expanded(
-                    child: MyButton(
-                      text: 'cancel',
-                      onPressed: (() => Navigator.of(context).pop()),
-                    ),
-                  ),
                 ],
               ),
             ],

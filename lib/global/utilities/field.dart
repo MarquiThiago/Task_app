@@ -5,7 +5,7 @@ import 'package:task_app/global/utilities/consts.dart';
 class Field extends StatelessWidget {
   String text;
   final Icon? icon;
-  final initialValue;
+  final String? initialValue;
   void Function(String?)? onSaved;
   final String? hint;
   final int? lines;
