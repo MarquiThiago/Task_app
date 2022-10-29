@@ -15,7 +15,7 @@ class NotePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NoteList notes = Provider.of(context);
+    final NoteList notes = Provider.of<NoteList>(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

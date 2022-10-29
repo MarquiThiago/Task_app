@@ -1,16 +1,19 @@
-import 'package:flutter/material.dart';
+import '../theme/color_enum.dart';
 
-class Todo with ChangeNotifier {
+class Todo {
   final String id;
   final String title;
   final String description;
   final DateTime? dateLimit;
-  final int? colorTask;
+  final ColorEnum colorEnum;
+  final List? chips;
+
   bool isDone;
 
   Todo({
-    this.colorTask,
     this.dateLimit,
+    this.chips,
+    required this.colorEnum,
     required this.id,
     required this.title,
     required this.description,

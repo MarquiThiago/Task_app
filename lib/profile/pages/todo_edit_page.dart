@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
@@ -6,6 +8,7 @@ import 'package:task_app/global/utilities/chip.dart';
 import 'package:task_app/global/utilities/field.dart';
 
 import '../../global/models/todo.dart';
+import '../../global/theme/color_enum.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
 import '../../global/provider/todo_list.dart';
@@ -22,7 +25,8 @@ class _TodoEditState extends State<TodoEdit> {
   final _formData = <String, Object>{};
   DateTime? dateLimit;
   DateTime date = DateTime(2022, 12, 24);
-  int? colorTask;
+  ColorEnum? colorEnum;
+  List? chips;
 
   @override
   void didChangeDependencies() {
@@ -36,9 +40,10 @@ class _TodoEditState extends State<TodoEdit> {
         _formData['id'] = todo.id;
         _formData['title'] = todo.title;
         _formData['description'] = todo.description;
-        colorTask = todo.colorTask;
+        colorEnum = todo.colorEnum;
         dateLimit = todo.dateLimit;
         date = todo.dateLimit ?? DateTime.now();
+        chips = todo.chips;
       }
     }
   }
@@ -46,7 +51,6 @@ class _TodoEditState extends State<TodoEdit> {
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
 
-    _formData['colorTask'] = colorTask ?? '';
     _formData['dateLimit'] = dateLimit ?? DateTime.now();
 
     if (!isValid) {
@@ -55,10 +59,22 @@ class _TodoEditState extends State<TodoEdit> {
 
     _formKey.currentState?.save();
 
+    bool hasId = _formData['id'] != null;
+
+    final todo = Todo(
+        id: hasId
+            ? _formData['id'] as String
+            : Random().nextDouble().toString(),
+        title: _formData['title'] as String,
+        description: _formData['description'] as String,
+        dateLimit: (_formData['dateLimit'] == null)
+            ? null
+            : _formData['dateLimit'] as DateTime,
+        colorEnum: colorEnum ?? ColorEnum.defaut);
     Provider.of<TodoList>(
       context,
       listen: false,
-    ).saveTodo(_formData);
+    ).saveTodo(todo);
 
     Navigator.of(context).pop();
   }
@@ -129,53 +145,18 @@ class _TodoEditState extends State<TodoEdit> {
               addVerticalSpace(20),
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.blue[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.blue[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.pink[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.pink[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.orange[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.orange[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.red[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.red[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.purple[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.purple[300],
-                      radius: 17,
+                  ...ColorEnum.avaliableColors.map(
+                    (e) => GestureDetector(
+                      onTap: () {
+                        colorEnum = e;
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: CircleAvatar(
+                          backgroundColor: e.color,
+                          radius: 17,
+                        ),
+                      ),
                     ),
                   ),
                 ],

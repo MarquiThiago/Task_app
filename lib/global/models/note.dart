@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class Note with ChangeNotifier {
+class Note {
   final String id;
   final String title;
   final String description;

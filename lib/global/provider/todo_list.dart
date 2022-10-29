@@ -1,74 +1,58 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:task_app/global/data/dummy_todo.dart';
 import '../models/todo.dart';
+import '../theme/color_enum.dart';
 
 class TodoList with ChangeNotifier {
   final List<Todo> _items = dummyTodos;
 
   List<Todo> get items {
-    final task = _findTask(search);
+    final task = _findTask();
     return task;
   }
 
-  String? search = '';
+  String search = '';
+
+  ColorEnum color = ColorEnum.all;
   int get itemsCount {
     return items.length;
   }
 
-  List<Todo> _findTask(String? searchString) {
-    if (searchString == null || searchString == '') {
-      return _items;
-    } else {
-      final taskFinder = List<Todo>.from(_items)
-          .where((search) =>
-              search.title.toUpperCase().startsWith(searchString.toUpperCase()))
-          .toList();
-      if (taskFinder.isEmpty) {
-        return [];
-      } else {
-        return taskFinder;
-      }
-    }
+  List<Todo> _findTask() {
+    return _items.where((element) {
+      return ((search == '') ||
+              element.title.toUpperCase().startsWith(search.toUpperCase()) ||
+              element.description
+                  .toUpperCase()
+                  .startsWith(search.toUpperCase()) ||
+              element.dateLimit
+                  .toString()
+                  .toUpperCase()
+                  .contains(search.toUpperCase())) &&
+          ((color == ColorEnum.all) || element.colorEnum == color);
+    }).toList();
   }
 
-  void searchTask(String? searchString) {
+  void searchTask(String searchString) {
     search = searchString;
     notifyListeners();
   }
 
-  void saveTodo(Map<String, Object> data) {
-    bool hasId = data['id'] != null;
-
-    final todo = Todo(
-      id: hasId ? data['id'] as String : Random().nextDouble().toString(),
-      title: data['title'] as String,
-      description: data['description'] as String,
-      colorTask: (data['colorTask'] == "") ? null : data['colorTask'] as int,
-      dateLimit:
-          (data['dateLimit'] == null) ? null : data['dateLimit'] as DateTime,
-    );
-
-    if (hasId) {
-      updateTodo(todo);
-    } else {
-      addTodo(todo);
-    }
-  }
-
-  void addTodo(Todo todo) {
-    _items.insert(0, todo);
+  void searchColor(ColorEnum colorEnum) {
+    color = colorEnum;
     notifyListeners();
   }
 
-  void updateTodo(Todo todo) {
+  void saveTodo(Todo todo) {
     int index = _items.indexWhere((t) => t.id == todo.id);
 
     if (index >= 0) {
       _items[index] = todo;
-      notifyListeners();
+    } else {
+      _items.insert(0, todo);
     }
+
+    notifyListeners();
   }
 
   void removeTodo(Todo todo) {

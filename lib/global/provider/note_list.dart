@@ -18,24 +18,46 @@ class NoteList with ChangeNotifier {
   }
 
   List<Note> _findTask(String? searchString) {
-    if (searchString == null || searchString == '') {
-      return _items;
-    } else {
-      final taskFinder = List<Note>.from(_items)
-          .where((pesquisa) => pesquisa.title
+    return _items.where((element) {
+      return (searchString == null || searchString == '') ||
+          element.title.toUpperCase().startsWith(searchString.toUpperCase()) ||
+          element.description
               .toUpperCase()
-              .startsWith(searchString.toUpperCase()))
-          .toList();
-      if (taskFinder.isEmpty) {
-        return [];
-      } else {
-        return taskFinder;
-      }
-    }
+              .startsWith(searchString.toUpperCase()) ||
+          element.dateLimit
+              .toString()
+              .toUpperCase()
+              .contains(searchString.toUpperCase()) ||
+          element.colorTask
+              .toString()
+              .toUpperCase()
+              .contains(searchString.toUpperCase());
+    }).toList();
   }
 
   void searchTask(String? searchString) {
-    search = searchString;
+    switch (searchString) {
+      case 'blue':
+        search = 'Color(0xff64b5f6)';
+        break;
+      case 'pink':
+        search = 'Color(0xfff06292)';
+        break;
+      case 'yellow':
+        search = 'Color(0xffffb74d)';
+        break;
+      case 'red':
+        search = 'Color(0xffe57373)';
+        break;
+      case 'purple':
+        search = 'Color(0xffba68c8)';
+        break;
+      case 'all':
+        search = '';
+        break;
+      default:
+        search = searchString;
+    }
     notifyListeners();
   }
 
@@ -64,7 +86,7 @@ class NoteList with ChangeNotifier {
   }
 
   void updateProduct(Note note) {
-    int index = _items.indexWhere((p) => p.id == note.id);
+    int index = _items.indexWhere((n) => n.id == note.id);
 
     if (index >= 0) {
       _items[index] = note;
@@ -73,10 +95,10 @@ class NoteList with ChangeNotifier {
   }
 
   void removeNote(Note note) {
-    int index = _items.indexWhere((p) => p.id == note.id);
+    int index = _items.indexWhere((n) => n.id == note.id);
 
     if (index >= 0) {
-      _items.removeWhere((p) => p.id == note.id);
+      _items.removeWhere((n) => n.id == note.id);
       notifyListeners();
     }
   }
