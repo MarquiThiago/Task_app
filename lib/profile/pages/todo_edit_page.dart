@@ -6,6 +6,7 @@ import 'package:task_app/global/utilities/chip.dart';
 import 'package:task_app/global/utilities/field.dart';
 import '../../global/models/todo.dart';
 import '../../global/theme/color_enum.dart';
+import '../../global/utilities/chips_name.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
 import '../../global/provider/todo_list.dart';
@@ -185,25 +186,12 @@ class _TodoEditState extends State<TodoEdit> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: const [
-                        ChipWidget(name: 'Study'),
-                        ChipWidget(name: 'Work'),
-                        ChipWidget(name: 'Personal'),
-                        ChipWidget(name: 'Goals'),
+                      children: [
+                        ...ChipsName.chipsName
+                            .map((e) => ChipWidget(name: e.name))
                       ],
                     ),
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: const [
-                        ChipWidget(name: 'Shoppings'),
-                        ChipWidget(name: 'Remember Later'),
-                        ChipWidget(name: 'Home Tasks'),
-                        ChipWidget(name: 'quotes'),
-                      ],
-                    ),
-                  )
                 ],
               ),
               addVerticalSpace(20),

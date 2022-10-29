@@ -7,6 +7,7 @@ import 'package:task_app/global/provider/note_list.dart';
 import '../../global/models/note.dart';
 import '../../global/theme/color_enum.dart';
 import '../../global/utilities/chip.dart';
+import '../../global/utilities/chips_name.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
 
@@ -181,22 +182,9 @@ class _NoteEditState extends State<NoteEdit> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: const [
-                        ChipWidget(name: 'Study'),
-                        ChipWidget(name: 'Work'),
-                        ChipWidget(name: 'Personal'),
-                        ChipWidget(name: 'Goals'),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: const [
-                        ChipWidget(name: 'Shoppings'),
-                        ChipWidget(name: 'Remember Later'),
-                        ChipWidget(name: 'Home Tasks'),
-                        ChipWidget(name: 'quotes'),
+                      children: [
+                        ...ChipsName.chipsName
+                            .map((e) => ChipWidget(name: e.name))
                       ],
                     ),
                   )
