@@ -20,6 +20,7 @@ class App extends StatelessWidget {
     return AnimatedBuilder(
       animation: AppController.instance,
       builder: ((context, child) => MaterialApp(
+            title: 'TASK APP',
             theme: AppController.instance.isDark ? Themes.dark : Themes.light,
             darkTheme: Themes.dark,
             themeMode: ThemeMode.light,

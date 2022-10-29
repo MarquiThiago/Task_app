@@ -78,37 +78,33 @@ class _NoteItemState extends State<NoteItem> {
           )
         ],
       ),
-      child: GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed(
-          AppRoutes.noteInfoPage,
-          arguments: widget.note,
+      child: Card(
+        color: widget.note.colorEnum.color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
-        child: Card(
-          color: (widget.note.colorTask == null)
-              ? Theme.of(context).cardColor
-              : Color(widget.note.colorTask!),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: ListTile(
-              title: Text(widget.note.title,
-                  style: Theme.of(context).textTheme.headline5),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.note.description,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  Text(
-                    DateFormat('d MMM y')
-                        .format(widget.note.dateLimit ?? DateTime.now()),
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                ],
-              ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ListTile(
+            onTap: () => Navigator.of(context).pushNamed(
+              AppRoutes.noteInfoPage,
+              arguments: widget.note,
+            ),
+            title: Text(widget.note.title,
+                style: Theme.of(context).textTheme.headline5),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.note.description,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Text(
+                  DateFormat('d MMM y')
+                      .format(widget.note.dateLimit ?? DateTime.now()),
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              ],
             ),
           ),
         ),

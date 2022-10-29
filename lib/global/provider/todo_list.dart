@@ -12,7 +12,6 @@ class TodoList with ChangeNotifier {
   }
 
   String search = '';
-
   ColorEnum color = ColorEnum.all;
   int get itemsCount {
     return items.length;
@@ -38,7 +37,7 @@ class TodoList with ChangeNotifier {
     notifyListeners();
   }
 
-  void searchColor(ColorEnum colorEnum) {
+  void searchTodoColor(ColorEnum colorEnum) {
     color = colorEnum;
     notifyListeners();
   }

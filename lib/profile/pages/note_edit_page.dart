@@ -1,10 +1,11 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/field.dart';
 import 'package:task_app/global/provider/note_list.dart';
 import '../../global/models/note.dart';
+import '../../global/theme/color_enum.dart';
 import '../../global/utilities/chip.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
@@ -21,7 +22,7 @@ class _NoteEditState extends State<NoteEdit> {
   final _formData = <String, Object>{};
   DateTime? dateLimit;
   DateTime date = DateTime(2022, 12, 24);
-  int? colorTask;
+  ColorEnum? colorEnum;
 
   @override
   void didChangeDependencies() {
@@ -35,7 +36,7 @@ class _NoteEditState extends State<NoteEdit> {
         _formData['id'] = note.id;
         _formData['title'] = note.title;
         _formData['description'] = note.description;
-        colorTask = note.colorTask;
+        colorEnum = note.colorEnum;
         dateLimit = note.dateLimit;
         date = note.dateLimit ?? DateTime.now();
       }
@@ -45,7 +46,6 @@ class _NoteEditState extends State<NoteEdit> {
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
 
-    _formData['colorTask'] = colorTask ?? '';
     _formData['dateLimit'] = dateLimit ?? DateTime.now();
 
     if (!isValid) {
@@ -54,10 +54,22 @@ class _NoteEditState extends State<NoteEdit> {
 
     _formKey.currentState?.save();
 
+    bool hasId = _formData['id'] != null;
+
+    final note = Note(
+        id: hasId
+            ? _formData['id'] as String
+            : Random().nextDouble().toString(),
+        title: _formData['title'] as String,
+        description: _formData['description'] as String,
+        dateLimit: (_formData['dateLimit'] == null)
+            ? null
+            : _formData['dateLimit'] as DateTime,
+        colorEnum: colorEnum ?? ColorEnum.defaut);
     Provider.of<NoteList>(
       context,
       listen: false,
-    ).saveProduct(_formData);
+    ).saveNote(note);
 
     Navigator.of(context).pop();
   }
@@ -117,53 +129,18 @@ class _NoteEditState extends State<NoteEdit> {
               addVerticalSpace(20),
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.blue[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.blue[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.pink[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.pink[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.orange[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.orange[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.red[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.red[300],
-                      radius: 17,
-                    ),
-                  ),
-                  addHorizontalSpace(10),
-                  GestureDetector(
-                    onTap: () {
-                      colorTask = (Colors.purple[300])!.value;
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.purple[300],
-                      radius: 17,
+                  ...ColorEnum.avaliableColors.map(
+                    (e) => GestureDetector(
+                      onTap: () {
+                        colorEnum = e;
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: CircleAvatar(
+                          backgroundColor: e.color,
+                          radius: 17,
+                        ),
+                      ),
                     ),
                   ),
                 ],

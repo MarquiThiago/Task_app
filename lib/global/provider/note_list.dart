@@ -1,97 +1,57 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:task_app/global/data/dummy_note.dart';
+import 'package:task_app/global/theme/color_enum.dart';
 import '../models/note.dart';
 
 class NoteList with ChangeNotifier {
   final List<Note> _items = dummyNotes;
 
   List<Note> get items {
-    final task = _findTask(search);
+    final task = _findTask();
     return task;
   }
 
-  String? search = '';
+  String search = '';
+  ColorEnum color = ColorEnum.all;
   int get itemsCount {
     return items.length;
   }
 
-  List<Note> _findTask(String? searchString) {
+  List<Note> _findTask() {
     return _items.where((element) {
-      return (searchString == null || searchString == '') ||
-          element.title.toUpperCase().startsWith(searchString.toUpperCase()) ||
-          element.description
-              .toUpperCase()
-              .startsWith(searchString.toUpperCase()) ||
-          element.dateLimit
-              .toString()
-              .toUpperCase()
-              .contains(searchString.toUpperCase()) ||
-          element.colorTask
-              .toString()
-              .toUpperCase()
-              .contains(searchString.toUpperCase());
+      return ((search == '') ||
+              element.title.toUpperCase().startsWith(search.toUpperCase()) ||
+              element.description
+                  .toUpperCase()
+                  .startsWith(search.toUpperCase()) ||
+              element.dateLimit
+                  .toString()
+                  .toUpperCase()
+                  .contains(search.toUpperCase())) &&
+          ((color == ColorEnum.all) || element.colorEnum == color);
     }).toList();
   }
 
-  void searchTask(String? searchString) {
-    switch (searchString) {
-      case 'blue':
-        search = 'Color(0xff64b5f6)';
-        break;
-      case 'pink':
-        search = 'Color(0xfff06292)';
-        break;
-      case 'yellow':
-        search = 'Color(0xffffb74d)';
-        break;
-      case 'red':
-        search = 'Color(0xffe57373)';
-        break;
-      case 'purple':
-        search = 'Color(0xffba68c8)';
-        break;
-      case 'all':
-        search = '';
-        break;
-      default:
-        search = searchString;
-    }
+  void searchTask(String searchString) {
+    search = searchString;
     notifyListeners();
   }
 
-  void saveProduct(Map<String, Object> data) {
-    bool hasId = data['id'] != null;
-
-    final note = Note(
-      id: hasId ? data['id'] as String : Random().nextDouble().toString(),
-      title: data['title'] as String,
-      description: data['description'] as String,
-      colorTask: (data['colorTask'] == "") ? null : data['colorTask'] as int,
-      dateLimit:
-          (data['dateLimit'] == null) ? null : data['dateLimit'] as DateTime,
-    );
-
-    if (hasId) {
-      updateProduct(note);
-    } else {
-      addProduct(note);
-    }
-  }
-
-  void addProduct(Note note) {
-    _items.insert(0, note);
+  void searchNoteColor(ColorEnum colorEnum) {
+    color = colorEnum;
     notifyListeners();
   }
 
-  void updateProduct(Note note) {
+  void saveNote(Note note) {
     int index = _items.indexWhere((n) => n.id == note.id);
 
     if (index >= 0) {
       _items[index] = note;
-      notifyListeners();
+    } else {
+      _items.insert(0, note);
     }
+
+    notifyListeners();
   }
 
   void removeNote(Note note) {

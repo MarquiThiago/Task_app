@@ -1,12 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/chip.dart';
 import 'package:task_app/global/utilities/field.dart';
-
 import '../../global/models/todo.dart';
 import '../../global/theme/color_enum.dart';
 import '../../global/utilities/consts.dart';
