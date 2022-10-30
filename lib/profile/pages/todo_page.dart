@@ -1,14 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:task_app/global/theme/app_controller.dart';
 import 'package:task_app/global/utilities/my_floating_button.dart';
 import '../../global/itens/todo_item.dart';
-import '../../global/provider/todo_list.dart';
+import '../../global/provider/todo_provider.dart';
 import '../../global/routes/app_routes.dart';
-import '../../global/theme/color_enum.dart';
+import '../../global/utilities/color_enum.dart';
 import '../../global/utilities/switch_mode.dart';
 
 Timer? _debounce;
@@ -18,9 +16,9 @@ class TodoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TodoList todos = Provider.of(context);
+    final TodoProvider todos = Provider.of(context);
 
-    return Consumer<TodoList>(
+    return Consumer<TodoProvider>(
       builder: (_, provider, __) => Scaffold(
         appBar: AppBar(
           elevation: 0,

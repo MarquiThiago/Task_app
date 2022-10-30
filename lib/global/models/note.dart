@@ -1,4 +1,4 @@
-import 'package:task_app/global/theme/color_enum.dart';
+import 'package:task_app/global/utilities/color_enum.dart';
 
 class Note {
   final String id;
@@ -6,11 +6,11 @@ class Note {
   final String description;
   final DateTime? dateLimit;
   final ColorEnum colorEnum;
-  final int? colorTask;
+  final String tag;
 
   Note({
-    this.colorTask,
     this.dateLimit,
+    required this.tag,
     required this.colorEnum,
     required this.id,
     required this.title,

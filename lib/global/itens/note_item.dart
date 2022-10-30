@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import '../models/note.dart';
-import '../provider/note_list.dart';
+import '../provider/note_provider.dart';
 import '../routes/app_routes.dart';
 import '../utilities/my_button.dart';
 
@@ -57,7 +57,7 @@ class _NoteItemState extends State<NoteItem> {
                     MyButton(
                       text: 'Delete',
                       onPressed: () {
-                        Provider.of<NoteList>(
+                        Provider.of<NoteProvider>(
                           context,
                           listen: false,
                         ).removeNote(widget.note);
@@ -99,10 +99,26 @@ class _NoteItemState extends State<NoteItem> {
                   widget.note.description,
                   style: Theme.of(context).textTheme.headline4,
                 ),
-                Text(
-                  DateFormat('d MMM y')
-                      .format(widget.note.dateLimit ?? DateTime.now()),
-                  style: Theme.of(context).textTheme.headline3,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 80),
+                      child: Text(
+                        DateFormat('d MMM y')
+                            .format(widget.note.dateLimit ?? DateTime.now()),
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    ),
+                    Chip(
+                      label: Text(
+                        widget.note.tag,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      backgroundColor:
+                          widget.note.colorEnum.color.withAlpha(100),
+                    ),
+                  ],
                 ),
               ],
             ),

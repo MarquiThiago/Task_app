@@ -4,7 +4,7 @@ enum ChipsName {
   personal,
   goals,
   shoppings,
-  rememberLater,
+  toRemember,
   homeTasks,
   quotes;
 
@@ -14,7 +14,7 @@ enum ChipsName {
         personal,
         goals,
         shoppings,
-        rememberLater,
+        toRemember,
         homeTasks,
         quotes,
       ];

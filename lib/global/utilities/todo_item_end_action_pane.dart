@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import '../models/todo.dart';
-import '../provider/todo_list.dart';
+import '../provider/todo_provider.dart';
 import 'my_button.dart';
 
 class TodoItemEndActionPane extends StatelessWidget {
@@ -26,7 +26,7 @@ class TodoItemEndActionPane extends StatelessWidget {
               MyButton(
                 text: 'Delete',
                 onPressed: () {
-                  Provider.of<TodoList>(
+                  Provider.of<TodoProvider>(
                     context,
                     listen: false,
                   ).removeTodo(todo);

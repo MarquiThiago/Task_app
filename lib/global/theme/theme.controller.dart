@@ -75,6 +75,7 @@ class Themes {
   );
 
   static final dark = ThemeData(
+    chipTheme: const ChipThemeData(backgroundColor: Colors.black26),
     drawerTheme: const DrawerThemeData(backgroundColor: Colors.black),
     cardColor: const Color.fromARGB(255, 225, 190, 231),
     floatingActionButtonTheme: FloatingActionButtonThemeData(

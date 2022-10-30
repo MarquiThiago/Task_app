@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/global/data/dummy_note.dart';
-import 'package:task_app/global/theme/color_enum.dart';
-import '../models/note.dart';
+import 'package:task_app/global/data/dummy_todo.dart';
+import '../models/todo.dart';
+import '../utilities/chips_name.dart';
+import '../utilities/color_enum.dart';
 
-class NoteList with ChangeNotifier {
-  final List<Note> _items = dummyNotes;
+class TodoProvider with ChangeNotifier {
+  final List<Todo> _items = dummyTodos;
 
-  List<Note> get items {
+  List<Todo> get items {
     final task = _findTask();
     return task;
+  }
+
+  TodoProvider() {
+    chipCreator();
+  }
+
+  List<String> chips = [];
+
+  void chipCreator() {
+    for (var element in ChipsName.chipsName) {
+      chips.add(element.name);
+    }
   }
 
   String search = '';
@@ -17,13 +30,14 @@ class NoteList with ChangeNotifier {
     return items.length;
   }
 
-  List<Note> _findTask() {
+  List<Todo> _findTask() {
     return _items.where((element) {
       return ((search == '') ||
               element.title.toUpperCase().startsWith(search.toUpperCase()) ||
               element.description
                   .toUpperCase()
                   .startsWith(search.toUpperCase()) ||
+              element.tag.toUpperCase().contains(search.toUpperCase()) ||
               element.dateLimit
                   .toString()
                   .toUpperCase()
@@ -37,28 +51,28 @@ class NoteList with ChangeNotifier {
     notifyListeners();
   }
 
-  void searchNoteColor(ColorEnum colorEnum) {
+  void searchTodoColor(ColorEnum colorEnum) {
     color = colorEnum;
     notifyListeners();
   }
 
-  void saveNote(Note note) {
-    int index = _items.indexWhere((n) => n.id == note.id);
+  void saveTodo(Todo todo) {
+    int index = _items.indexWhere((t) => t.id == todo.id);
 
     if (index >= 0) {
-      _items[index] = note;
+      _items[index] = todo;
     } else {
-      _items.insert(0, note);
+      _items.insert(0, todo);
     }
 
     notifyListeners();
   }
 
-  void removeNote(Note note) {
-    int index = _items.indexWhere((n) => n.id == note.id);
+  void removeTodo(Todo todo) {
+    int index = _items.indexWhere((t) => t.id == todo.id);
 
     if (index >= 0) {
-      _items.removeWhere((n) => n.id == note.id);
+      _items.removeWhere((t) => t.id == todo.id);
       notifyListeners();
     }
   }

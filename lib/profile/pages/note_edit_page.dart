@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/field.dart';
-import 'package:task_app/global/provider/note_list.dart';
+import 'package:task_app/global/provider/note_provider.dart';
 import '../../global/models/note.dart';
-import '../../global/theme/color_enum.dart';
-import '../../global/utilities/chip.dart';
-import '../../global/utilities/chips_name.dart';
+import '../../global/utilities/color_enum.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
 
@@ -24,6 +22,14 @@ class _NoteEditState extends State<NoteEdit> {
   DateTime? dateLimit;
   DateTime date = DateTime(2022, 12, 24);
   ColorEnum? colorEnum;
+  bool isSelected = false;
+  late int _choiceIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _choiceIndex = 0;
+  }
 
   @override
   void didChangeDependencies() {
@@ -58,16 +64,17 @@ class _NoteEditState extends State<NoteEdit> {
     bool hasId = _formData['id'] != null;
 
     final note = Note(
-        id: hasId
-            ? _formData['id'] as String
-            : Random().nextDouble().toString(),
-        title: _formData['title'] as String,
-        description: _formData['description'] as String,
-        dateLimit: (_formData['dateLimit'] == null)
-            ? null
-            : _formData['dateLimit'] as DateTime,
-        colorEnum: colorEnum ?? ColorEnum.defaut);
-    Provider.of<NoteList>(
+      id: hasId ? _formData['id'] as String : Random().nextDouble().toString(),
+      title: _formData['title'] as String,
+      description: _formData['description'] as String,
+      dateLimit: (_formData['dateLimit'] == null)
+          ? null
+          : _formData['dateLimit'] as DateTime,
+      tag:
+          Provider.of<NoteProvider>(context, listen: false).chips[_choiceIndex],
+      colorEnum: colorEnum ?? ColorEnum.defaut,
+    );
+    Provider.of<NoteProvider>(
       context,
       listen: false,
     ).saveNote(note);
@@ -77,6 +84,9 @@ class _NoteEditState extends State<NoteEdit> {
 
   @override
   Widget build(BuildContext context) {
+    final noteController = Provider.of<NoteProvider>(
+      context,
+    );
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -179,13 +189,26 @@ class _NoteEditState extends State<NoteEdit> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   addVerticalSpace(8),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ...ChipsName.chipsName
-                            .map((e) => ChipWidget(name: e.name))
-                      ],
+                  SizedBox(
+                    height: 80,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: noteController.chips.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: ChoiceChip(
+                          selectedColor: Colors.purple[300],
+                          label: Text(noteController.chips[index]),
+                          selected: _choiceIndex == index,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              _choiceIndex = selected ? index : 0;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                   )
                 ],
@@ -197,7 +220,6 @@ class _NoteEditState extends State<NoteEdit> {
                 children: [
                   Expanded(
                       child: MyButton(text: 'save', onPressed: _submitForm)),
-                  addHorizontalSpace(10),
                 ],
               ),
             ],

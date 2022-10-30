@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
-import 'package:task_app/global/theme/color_enum.dart';
+import 'package:task_app/global/utilities/color_enum.dart';
 import 'package:task_app/global/utilities/my_floating_button.dart';
 import '../../global/itens/note_item.dart';
-import '../../global/provider/note_list.dart';
+import '../../global/provider/note_provider.dart';
 import '../../global/routes/app_routes.dart';
 import '../../global/theme/app_controller.dart';
 import '../../global/utilities/switch_mode.dart';
@@ -18,8 +18,8 @@ class NotePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NoteList notes = Provider.of<NoteList>(context);
-    return Consumer<NoteList>(
+    final NoteProvider notes = Provider.of<NoteProvider>(context);
+    return Consumer<NoteProvider>(
       builder: (_, provider, __) => Scaffold(
         appBar: AppBar(
           elevation: 0,

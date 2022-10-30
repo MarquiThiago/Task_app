@@ -1,4 +1,4 @@
-import '../theme/color_enum.dart';
+import '../utilities/color_enum.dart';
 
 class Todo {
   final String id;
@@ -6,13 +6,13 @@ class Todo {
   final String description;
   final DateTime? dateLimit;
   final ColorEnum colorEnum;
-  final List? chips;
+  final String tag;
 
   bool isDone;
 
   Todo({
     this.dateLimit,
-    this.chips,
+    required this.tag,
     required this.colorEnum,
     required this.id,
     required this.title,

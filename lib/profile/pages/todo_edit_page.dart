@@ -2,14 +2,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:task_app/global/utilities/chip.dart';
 import 'package:task_app/global/utilities/field.dart';
 import '../../global/models/todo.dart';
-import '../../global/theme/color_enum.dart';
-import '../../global/utilities/chips_name.dart';
+import '../../global/utilities/color_enum.dart';
 import '../../global/utilities/consts.dart';
 import '../../global/utilities/my_button.dart';
-import '../../global/provider/todo_list.dart';
+import '../../global/provider/todo_provider.dart';
 
 class TodoEdit extends StatefulWidget {
   const TodoEdit({Key? key}) : super(key: key);
@@ -24,7 +22,13 @@ class _TodoEditState extends State<TodoEdit> {
   DateTime? dateLimit;
   DateTime date = DateTime(2022, 12, 24);
   ColorEnum? colorEnum;
-  List? chips;
+  late int _choiceIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _choiceIndex = 0;
+  }
 
   @override
   void didChangeDependencies() {
@@ -41,7 +45,6 @@ class _TodoEditState extends State<TodoEdit> {
         colorEnum = todo.colorEnum;
         dateLimit = todo.dateLimit;
         date = todo.dateLimit ?? DateTime.now();
-        chips = todo.chips;
       }
     }
   }
@@ -68,8 +71,10 @@ class _TodoEditState extends State<TodoEdit> {
         dateLimit: (_formData['dateLimit'] == null)
             ? null
             : _formData['dateLimit'] as DateTime,
+        tag: Provider.of<TodoProvider>(context, listen: false)
+            .chips[_choiceIndex],
         colorEnum: colorEnum ?? ColorEnum.defaut);
-    Provider.of<TodoList>(
+    Provider.of<TodoProvider>(
       context,
       listen: false,
     ).saveTodo(todo);
@@ -90,6 +95,9 @@ class _TodoEditState extends State<TodoEdit> {
 
   @override
   Widget build(BuildContext context) {
+    final todoController = Provider.of<TodoProvider>(
+      context,
+    );
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -183,13 +191,26 @@ class _TodoEditState extends State<TodoEdit> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   addVerticalSpace(8),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ...ChipsName.chipsName
-                            .map((e) => ChipWidget(name: e.name))
-                      ],
+                  SizedBox(
+                    height: 80,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: todoController.chips.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: ChoiceChip(
+                          selectedColor: Colors.purple[300],
+                          label: Text(todoController.chips[index]),
+                          selected: _choiceIndex == index,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              _choiceIndex = selected ? index : 0;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ],
