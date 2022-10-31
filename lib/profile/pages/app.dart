@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_app/global/provider/note_provider.dart';
+import 'package:task_app/global/provider/todo_provider.dart';
 import 'package:task_app/global/routes/app_routes.dart';
 import 'package:task_app/profile/pages/home_page.dart';
 import 'package:task_app/profile/pages/profile_edit_page.dart';
@@ -17,27 +20,35 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: AppController.instance,
-      builder: ((context, child) => MaterialApp(
-            title: 'TASK APP',
-            theme: AppController.instance.isDark ? Themes.dark : Themes.light,
-            darkTheme: Themes.dark,
-            themeMode: ThemeMode.light,
-            debugShowCheckedModeBanner: false,
-            initialRoute: AppRoutes.home,
-            home: const HomePage(),
-            routes: {
-              AppRoutes.todoEdit: (ctx) => const TodoEdit(),
-              AppRoutes.todoInfoPage: (ctx) => const TodoInfoPage(),
-              AppRoutes.todoPage: (ctx) => const TodoPage(),
-              AppRoutes.noteEdit: (ctx) => const NoteEdit(),
-              AppRoutes.notePage: (ctx) => const NotePage(),
-              AppRoutes.noteInfoPage: (ctx) => const NoteInfoPage(),
-              AppRoutes.profilePage: (ctx) => const ProfilePage(),
-              AppRoutes.profileEdit: (ctx) => const EditProfilePage(),
-            },
-          )),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<TodoProvider>(
+            create: (context) => TodoProvider()),
+        ChangeNotifierProvider<NoteProvider>(
+            create: (context) => NoteProvider())
+      ],
+      child: AnimatedBuilder(
+        animation: AppController.instance,
+        builder: ((context, child) => MaterialApp(
+              title: 'TASK APP',
+              theme: AppController.instance.isDark ? Themes.dark : Themes.light,
+              darkTheme: Themes.dark,
+              themeMode: ThemeMode.light,
+              debugShowCheckedModeBanner: false,
+              initialRoute: AppRoutes.home,
+              home: const HomePage(),
+              routes: {
+                AppRoutes.todoEdit: (ctx) => const TodoEdit(),
+                AppRoutes.todoInfoPage: (ctx) => const TodoInfoPage(),
+                AppRoutes.todoPage: (ctx) => const TodoPage(),
+                AppRoutes.noteEdit: (ctx) => const NoteEdit(),
+                AppRoutes.notePage: (ctx) => const NotePage(),
+                AppRoutes.noteInfoPage: (ctx) => const NoteInfoPage(),
+                AppRoutes.profilePage: (ctx) => const ProfilePage(),
+                AppRoutes.profileEdit: (ctx) => const EditProfilePage(),
+              },
+            )),
+      ),
     );
   }
 }

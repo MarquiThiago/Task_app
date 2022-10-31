@@ -25,7 +25,6 @@ class _TodoItemState extends State<TodoItem> {
   DateTime date = DateTime(2022, 12, 24);
   @override
   Widget build(BuildContext context) {
-    final TodoProvider todos = Provider.of(context);
     return Consumer<TodoProvider>(
       builder: (_, provider, __) => Slidable(
         startActionPane: ActionPane(
@@ -39,9 +38,8 @@ class _TodoItemState extends State<TodoItem> {
           color: widget.todo.isDone
               ? widget.todo.colorEnum.color.withAlpha(100)
               : widget.todo.colorEnum.color,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: ListTile(
@@ -51,20 +49,20 @@ class _TodoItemState extends State<TodoItem> {
               ),
               leading: Checkbox(
                 value: widget.todo.isDone,
+                activeColor: Colors.black,
                 onChanged: (value) => setState(() {
                   widget.todo.isDone = !widget.todo.isDone;
                 }),
-                activeColor: Colors.black,
               ),
               title: Text(
                 widget.todo.title,
                 style: TextStyle(
                   color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                   decoration: widget.todo.isDone
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
                 ),
               ),
               subtitle: Column(
