@@ -37,7 +37,12 @@ class TodoPage extends StatelessWidget {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        TodoItem(todos.items[i]),
+                        TodoItem(
+                          todo: todos.items[i],
+                          toggleIsDone: () => todos.toggleIsDone(
+                            todos.items[i],
+                          ),
+                        ),
                       ],
                     ),
                   ),

@@ -7,8 +7,8 @@ class Todo {
   final DateTime? dateLimit;
   final ColorEnum colorEnum;
   final String tag;
-
   bool isDone;
+  bool get isNotDone => !isDone;
 
   Todo({
     this.dateLimit,

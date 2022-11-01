@@ -8,8 +8,18 @@ class TodoProvider with ChangeNotifier {
   final List<Todo> _items = dummyTodos;
 
   List<Todo> get items {
-    final task = _findTask();
-    return task;
+    final List<Todo> tasks = _findTask();
+    tasks.sort((a, b) {
+      if (a.isNotDone && b.isDone) return -1;
+      if (a.isDone && b.isNotDone) return 1;
+      return 0;
+    });
+    return tasks;
+  }
+
+  toggleIsDone(Todo todo) {
+    todo.isDone = !todo.isDone;
+    notifyListeners();
   }
 
   TodoProvider() {

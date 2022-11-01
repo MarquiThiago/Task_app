@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/global/utilities/field.dart';
 import 'package:task_app/global/provider/note_provider.dart';

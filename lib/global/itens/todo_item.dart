@@ -11,10 +11,12 @@ import '../utilities/todo_item_start_action_pane.dart';
 
 class TodoItem extends StatefulWidget {
   final Todo todo;
+  final Function() toggleIsDone;
 
-  const TodoItem(
-    this.todo, {
+  const TodoItem({
     Key? key,
+    required this.todo,
+    required this.toggleIsDone,
   }) : super(key: key);
 
   @override
@@ -51,7 +53,7 @@ class _TodoItemState extends State<TodoItem> {
                 value: widget.todo.isDone,
                 activeColor: Colors.black,
                 onChanged: (value) => setState(() {
-                  widget.todo.isDone = !widget.todo.isDone;
+                  widget.toggleIsDone();
                 }),
               ),
               title: Text(
