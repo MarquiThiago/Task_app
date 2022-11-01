@@ -8,7 +8,7 @@ final dummyNotes = [
     title: 'Lembrete para voce mesmo',
     description: 'A red shirt - it is pretty red!',
     colorEnum: ColorEnum.defaut,
-    tag: 'toRemanber',
+    tag: 'toRemember',
   ),
   Note(
     id: 'p2',

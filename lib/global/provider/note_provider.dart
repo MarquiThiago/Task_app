@@ -33,12 +33,12 @@ class NoteProvider with ChangeNotifier {
   List<Note> _findTask() {
     return _items.where((element) {
       return ((search == '') ||
-              element.title.toUpperCase().startsWith(search.toUpperCase()) ||
+              element.title.toUpperCase().contains(search.toUpperCase()) ||
               element.description
                   .toUpperCase()
-                  .startsWith(search.toUpperCase()) ||
+                  .contains(search.toUpperCase()) ||
               element.tag.toUpperCase().contains(search.toUpperCase()) ||
-              element.dateLimit
+              element.date
                   .toString()
                   .toUpperCase()
                   .contains(search.toUpperCase())) &&

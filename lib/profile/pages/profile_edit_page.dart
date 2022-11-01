@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/global/utilities/consts.dart';
+import 'package:task_app/global/utilities/space.dart';
 import 'package:task_app/global/utilities/my_button.dart';
 import '../../global/data/user_preferences.dart';
 import '../../global/models/user.dart';
@@ -10,11 +10,10 @@ class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _EditProfilePageState createState() => _EditProfilePageState();
+  EditProfilePageState createState() => EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class EditProfilePageState extends State<EditProfilePage> {
   User user = UserPreferences.dummyUser;
 
   @override

@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/global/provider/todo_provider.dart';
-import 'package:task_app/global/utilities/consts.dart';
+import 'package:task_app/global/utilities/space.dart';
 import 'package:task_app/global/utilities/todo_item_end_action_pane.dart';
 import '../routes/app_routes.dart';
 import '../models/todo.dart';

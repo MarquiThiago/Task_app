@@ -6,7 +6,7 @@ import 'package:task_app/global/utilities/field.dart';
 import 'package:task_app/global/provider/note_provider.dart';
 import '../../global/models/note.dart';
 import '../../global/utilities/color_enum.dart';
-import '../../global/utilities/consts.dart';
+import '../../global/utilities/space.dart';
 import '../../global/utilities/my_button.dart';
 
 class NoteEdit extends StatefulWidget {
@@ -19,8 +19,6 @@ class NoteEdit extends StatefulWidget {
 class _NoteEditState extends State<NoteEdit> {
   final _formKey = GlobalKey<FormState>();
   final _formData = <String, Object>{};
-  DateTime? dateLimit;
-  DateTime date = DateTime(2022, 12, 24);
   ColorEnum? colorEnum;
   bool isSelected = false;
   late int _choiceIndex;
@@ -44,16 +42,12 @@ class _NoteEditState extends State<NoteEdit> {
         _formData['title'] = note.title;
         _formData['description'] = note.description;
         colorEnum = note.colorEnum;
-        dateLimit = note.dateLimit;
-        date = note.dateLimit ?? DateTime.now();
       }
     }
   }
 
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
-
-    _formData['dateLimit'] = dateLimit ?? DateTime.now();
 
     if (!isValid) {
       return;
@@ -67,9 +61,6 @@ class _NoteEditState extends State<NoteEdit> {
       id: hasId ? _formData['id'] as String : Random().nextDouble().toString(),
       title: _formData['title'] as String,
       description: _formData['description'] as String,
-      dateLimit: (_formData['dateLimit'] == null)
-          ? null
-          : _formData['dateLimit'] as DateTime,
       tag:
           Provider.of<NoteProvider>(context, listen: false).chips[_choiceIndex],
       colorEnum: colorEnum ?? ColorEnum.defaut,
@@ -156,39 +147,14 @@ class _NoteEditState extends State<NoteEdit> {
                   ),
                 ],
               ),
-              addVerticalSpace(20),
-              Text(
-                'Choose a task date limit ',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              addVerticalSpace(10),
+              addVerticalSpace(30),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    DateFormat('d MMM y').format(date),
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  addVerticalSpace(8),
-                  MyButton(
-                    text: 'select date',
-                    onPressed: () async {
-                      dateLimit = await showDatePicker(
-                        context: context,
-                        initialDate: date,
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100),
-                      );
-                      if (dateLimit == null) return;
-                      setState(() => date = dateLimit!);
-                    },
-                  ),
-                  addVerticalSpace(8),
-                  Text(
                     'Choose your task tag',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
-                  addVerticalSpace(8),
                   SizedBox(
                     height: 80,
                     child: ListView.builder(

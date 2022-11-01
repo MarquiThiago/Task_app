@@ -4,12 +4,12 @@ class Note {
   final String id;
   final String title;
   final String description;
-  final DateTime? dateLimit;
+  final DateTime? date;
   final ColorEnum colorEnum;
   final String tag;
 
   Note({
-    this.dateLimit,
+    this.date,
     required this.tag,
     required this.colorEnum,
     required this.id,

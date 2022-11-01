@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/global/utilities/consts.dart';
+import 'package:task_app/global/utilities/space.dart';
 import '../../global/data/user_preferences.dart';
 import '../../global/itens/profile_widget.dart';
 import '../../global/utilities/switch_mode.dart';
